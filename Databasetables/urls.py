@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import path
 from rest_framework import routers
-from django.conf.urls import include
+from django.conf.urls import include, url
 from .models import Teams, League, LeagueFinals, LeagueGames, CupDraws, CupRounds, ChallengeQueue, Candidates, PreBooked, PitchBookings, Positions, Fixtures, Votes, Locations, PlayerProfile
-from .views import UserViewSet, TeamViewSet, LeagueViewSet, LeagueFinalViewSet, LeagueGameViewSet, CupDrawViewSet, CupRoundViewSet, ChallengeQueueViewSet, CandidateViewSet, CandidateViewSet, PrebookedViewSet, PitchbookingViewSet, PositionViewSet, FixtureViewSet, VoteViewSet, LocationViewSet, PlayerProfileViewSet
+from .views import UserViewSet, TeamViewSet,StudentIDViewSet, LeagueViewSet, LeagueFinalViewSet, LeagueGameViewSet, CupDrawViewSet, CupRoundViewSet, ChallengeQueueViewSet, CandidateViewSet, CandidateViewSet, PrebookedViewSet, PitchbookingViewSet, PositionViewSet, FixtureViewSet, VoteViewSet, LocationViewSet, PlayerProfileViewSet
+from django.contrib.auth import views as auth_views 
 
 router = routers.DefaultRouter()
 router.register('users', UserViewSet)
@@ -21,7 +22,9 @@ router.register('fixtures', FixtureViewSet)
 router.register('votes', VoteViewSet)
 router.register('locations',LocationViewSet)
 router.register('playerprofile', PlayerProfileViewSet)
+router.register('studentid', StudentIDViewSet)
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)), 
+    path('password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
 ]

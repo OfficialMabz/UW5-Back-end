@@ -1,26 +1,29 @@
 from rest_framework import serializers
-from .models import Teams, League, LeagueFinals, LeagueGames, CupDraws, CupRounds, ChallengeQueue, Candidates, PreBooked,Ladder, PitchBookings, Positions, Fixtures, Votes, Locations, PlayerProfile
+from .models import Teams, League, LeagueFinals, StudentID, LeagueGames, CupDraws, CupRounds, ChallengeQueue, Candidates, PreBooked,Ladder, PitchBookings, Positions, Fixtures, Votes, Locations, PlayerProfile
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta: 
         model = User
-        fields = ('id', 'username',  'password')
+        fields = ('id', 'username','email', 'password')
         extra_kwargs = {'password': {'write_only':True, 'required':True}}
-    
+        
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data, )
         token = Token.objects.create(user=user)
         return user
 
+class StudentIDSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = StudentID
+        fields = ( 'id', 'studentid')
 
 
 class PlayerProfileSerializer(serializers.ModelSerializer):
     class Meta: 
         model = PlayerProfile
-        fields= ('id', 'user', 'studentId')
+        fields= ('id', 'user', 'studentId', 'email')
 
 class LadderSerializer(serializers.ModelSerializer):
     class Meta: 

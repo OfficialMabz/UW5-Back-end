@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status
 from django.contrib.auth.models import User
-from .models import Teams, League, LeagueFinals, LeagueGames, CupDraws,Ladder, CupRounds, ChallengeQueue, Candidates, PreBooked, PitchBookings, Positions, Fixtures, Votes, Locations, PlayerProfile
-from .serializers import UserSerializer,TeamSerializer, LeagueSerializer,LadderSerializer, LeagueFinalSerializer, LeagueGameSerializer, CupDrawSerializer, CupRoundSerializer, ChallengeQueueSerializer, CandidateSerializer, PrebookedSerializer, PitchBookingSerializer, PositionSerializer, FixtureSerializer, VoteSerializer, LocationSerializer, PlayerProfileSerializer
+from .models import Teams, League, StudentID, LeagueFinals, LeagueGames, CupDraws,Ladder, CupRounds, ChallengeQueue, Candidates, PreBooked, PitchBookings, Positions, Fixtures, Votes, Locations, PlayerProfile
+from .serializers import UserSerializer,StudentIDSerializer, TeamSerializer, LeagueSerializer,LadderSerializer, LeagueFinalSerializer, LeagueGameSerializer, CupDrawSerializer, CupRoundSerializer, ChallengeQueueSerializer, CandidateSerializer, PrebookedSerializer, PitchBookingSerializer, PositionSerializer, FixtureSerializer, VoteSerializer, LocationSerializer, PlayerProfileSerializer
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from rest_framework.authentication import TokenAuthentication
@@ -11,40 +11,73 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from django_rest_passwordreset.signals import reset_password_token_created
+from django.dispatch import receiver
+from django.urls import reverse
+from django.core.mail import send_mail  
+import re
+from urllib.request import urlopen
 
-# Create your views here.
 
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+
+    email_plaintext_message = 'Copy and paste the token to gain access to your new reset password ' +': ' + '' + reset_password_token.key
+
+    send_mail(
+        # title:
+        "Password Reset for {title}".format(title="UW5"),
+        # message:
+        
+        email_plaintext_message,
+        # from:
+        "officialmabz786@gmail.com",
+        # to:
+        [reset_password_token.user.email]
+    )
+
+def studentIdScrapper():
+
+    url = 'https://www.warwicksu.com/membershipapi/listMembers/f84103bd-b42c-492f-a2c8-6c3f080c331d/'
+    page = urlopen(url)
+    html = page.read().decode('utf-8')
+    pattern = "<uniqueid.*?>.*?</uniqueid.*?>"
+    match_results = re.findall(pattern, html, re.IGNORECASE)
+
+    halfresult = [re.sub(r'<UniqueID>', '', i) for i in match_results]
+    fullresult = [re.sub(r'</UniqueID>', '', i) for i in halfresult]
+
+    for i in range(0, len(fullresult)): 
+        fullresult[i] = int(fullresult[i]) 
+
+    return fullresult
+
+class StudentIDViewSet(viewsets.ModelViewSet):
+    queryset = StudentID.objects.all()
+    serializer_class = StudentIDSerializer
+    permission_classes = (AllowAny, )
+
+    def create(self, request, *args, **kwargs):
+        serializer = StudentIDSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        chosenStudentId = serializer.validated_data.get('studentid')
+        fetchedIds = studentIdScrapper()
+        
+        if chosenStudentId in fetchedIds:
+            serializer.save()
+            response = {'message': 'Success', 'result': serializer.data}
+            return Response(response, status=status.HTTP_200_OK)
+        else:
+            response = {'message': 'Failed to register, Incorrect student Id', 'result': serializer.data}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response(serializer.data)
+
+  
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
-
-    """
-    @action(detail=False, methods=['POST'])
-    def register(self, request):
-        if 'studentId' in request.data:
-            studentId = request.data['studentId']
-            user = User.objects.get(id=13)
-
-      
-            try: 
-                playerprofile = PlayerProfile.objects.get(user=user.id)
-                playerprofile.studentId=studentId
-                playerprofile.save()
-                serializer = PlayerProfileSerializer(playerprofile, many=False)
-                response = {'message': 'Rating Updated', 'result': serializer.data}
-                return Response(response, status=status.HTTP_200_OK)
-            except:
-                PlayerProfile.objects.create(user=user, studentId=studentId)
-                response ={'message': 'Rating created', 'result': serializer.data}
-                return Response(response, status=status.HTTP_400_BAD_REQUEST)
-        else: 
-            response ={'message': 'You need to provide stars'}
-            return Response(response, status=status.HTTP_400_BAD_REQUEST)
-        
-        """
-    
-
 
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = Teams.objects.all()

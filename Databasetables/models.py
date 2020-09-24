@@ -6,9 +6,10 @@ from django.dispatch import receiver
 #THE ID HAS BEEN MOVED AS EACH TABLES COMES WITH ITS BUILT IN ID NUMBERS
 #MAKE SURE TO REMOVE THE ID SECTION FROM EXCEL WHILE IMPORTING 
 #ALSO MAKE SURE TO CHANGE THE EXCEL TYPE TO CSV FILE IN ORDER TO WORK PERFECTLY
-#COMPARE THE TABLES WITH THE EXCEL OR CAPTURED IMAGE TO SEE THE DIFFERENCES AND SIMILARITY 
+#COMPARE THE TABLES WITH THE EXCEL OR CAPTURED IMAGE TO SEE THE DIFFERENCES AND SIMILARITY   
 
-# Create your models here.
+class StudentID(models.Model):
+    studentid = models.IntegerField( blank=True, null=True)
 
 class Ladder(models.Model):
     LadderName = models.CharField(max_length=50, default='0')
@@ -21,8 +22,8 @@ class Teams(models.Model):
     description = models.TextField(max_length=220, blank=True)
     password = models.CharField(max_length=50)
     photo = models.FileField(upload_to = 'teamsImage/', blank=True)
-    ladderId = models.ForeignKey(Ladder, default=0, on_delete=models.CASCADE, blank=True)
-    competitionId = models.IntegerField(blank=True)
+    ladderId = models.ForeignKey(Ladder, on_delete=models.CASCADE,default=0, blank=True)
+    competitionId = models.IntegerField(blank=True, null=True)
     position = models.IntegerField(blank=True)
     contactforfriendly = models.CharField(blank=True, max_length=50)
     seeded = models.IntegerField(blank=True)
@@ -31,19 +32,17 @@ class Teams(models.Model):
 
     def __str__(self):
         return self.name
+        
 
 class PlayerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE )
     studentId = models.CharField(default='0', max_length=10)
-    team = models.ForeignKey(Teams, null= True, on_delete=models.CASCADE, blank=True)
-
+    phone = models.IntegerField( default='0', blank=True)
+    goalsScored = models.IntegerField(null=True, blank=True)
+    fb_id = models.CharField(blank=True, max_length=50, null=True)
 
     def __str__(self):
         return self.user.username
-        
-
-    
-
 
 
 """class Players(models.Model):

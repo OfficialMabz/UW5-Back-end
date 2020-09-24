@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from .models import Teams, League, LeagueFinals, LeagueGames, Ladder, CupDraws, CupRounds, ChallengeQueue, Candidates, PreBooked, PitchBookings, Positions, Fixtures, Votes, Locations, PlayerProfile
+from .models import Teams, StudentID, League, LeagueFinals, LeagueGames, Ladder, CupDraws, CupRounds, ChallengeQueue, Candidates, PreBooked, PitchBookings, Positions, Fixtures, Votes, Locations, PlayerProfile
 
 admin.site.site_header = 'UW5 DATABASE'
 
@@ -8,6 +8,7 @@ admin.site.site_header = 'UW5 DATABASE'
 
 admin.site.register(Ladder)
 admin.site.register(PlayerProfile)
+admin.site.register(StudentID)
 admin.site.register(Teams, ImportExportModelAdmin)
 admin.site.register(League, ImportExportModelAdmin)
 admin.site.register(LeagueFinals, ImportExportModelAdmin)

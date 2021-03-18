@@ -6,7 +6,7 @@ During the Covid-19 first lockdown my friend from University of Warwick have tak
 
 Note: Few aspects has been removed from this reposistory comparing to original one reason being confidentiality. 
 
-How it operates
+How it operates:
 
 Our intial plan was to that I make the backend and and provide the ncecessary details to the front-end throguh the use of API, where he can fetch those data to present on the screen for user.
 

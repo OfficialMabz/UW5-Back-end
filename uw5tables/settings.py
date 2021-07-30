@@ -25,7 +25,7 @@ SECRET_KEY = 'oee!9gp6g7q$c3qwq8aa$b8gi(p#h$fkk=g1i0rr0fjmbr@=zw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['176.58.111.13']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -139,7 +139,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_ROOT =os.path.join(BASE_DIR, '..', 'upload_media')
 MEDIA_URL = '/media/'
-<<<<<<< HEAD
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -149,5 +148,3 @@ EMAIL_HOST_USER = 'uwarwick5@gmail.com'
 EMAIL_HOST_PASSWORD = 'cphatters'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 #DEFAULT_FROM_EMAIL = 'CodingWithMitch Team <noreply@codingwithmitch.com>'
-=======
->>>>>>> pre-deployment

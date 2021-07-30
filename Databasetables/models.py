@@ -45,22 +45,6 @@ class PlayerProfile(models.Model):
         return self.user.username
 
 
-"""class Players(models.Model):
-    studentId = models.IntegerField(blank=True, null=True)
-    teamID = models.ForeignKey(Teams, on_delete=models.CASCADE, null=True)
-    displayName = models.CharField(max_length=40, null=True)
-    isExec = models.BooleanField(blank=True, null=True)
-    webmaster = models.IntegerField(blank=True, null=True)
-    sessionKey = models.CharField(blank=True, max_length=100, null=True)
-    password = models.CharField(blank=True, max_length=125, null=True)
-    public_details = models.IntegerField(blank=True, null=True)
-    email = models.CharField(max_length=50, null=True)
-    phone = models.CharField(max_length=20, null=True)
-    send_email = models.IntegerField(blank=True, null=True)
-    fb_id = models.CharField(blank=True, max_length=5, null=True)
-    goalsScored = models.IntegerField(null=True)
-    """
-
 class Positions(models.Model):
     title = models.CharField(blank=True, max_length=50)
     description = models.TextField(blank=True, max_length=500)
@@ -95,13 +79,7 @@ class PreBooked(models.Model):
     time = models.TimeField(blank=True)
     temp = models.IntegerField(blank=True)
 
-'''class Booking(models.Model): 
-    teamAId = models.ForeignKey(Teams, on_delete=models.CASCADE, null=True, blank=True)
-    teamBId = models.IntegerField(blank=True)
-    locationId = models.ForeignKey(Locations, on_delete=models.CASCADE, null=True, blank=True)
-    date = models.IntegerField(blank=True)
-    prebookedId = models.ForeignKey(PreBooked, on_delete=models.CASCADE, null=True, blank=True)
-   ''' 
+
 class Votes(models.Model):
     playerId = models.ForeignKey(PlayerProfile, on_delete=models.CASCADE, null=True, blank=True)
     #candidateId = models.ForeignKey(Candidates, on_delete=models.CASCADE, null=True, blank=True)

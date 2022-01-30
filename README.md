@@ -4,6 +4,8 @@ Background
 
 During the Covid-19 first lockdown my friend from University of Warwick have taken a responsibility to transform old sport website of his University into modern app. He had basic knowledge of React Native and front-end, however needed support for back-end. That is where I came in, when he discussed with me this issue, I was trilled to be part of this journey as during the first lockdown we had nothing else do to. Begun to research about the back-end framework that should provide and hold the necessary data for React Native, Django Rest Framework API (Python Framework) turned out to be the suitable option. Hence, to learn and enhance knowledge on this framework I have completed an Udemy Django Rest Framework crash course as well as Traverse Django Course from YouTube and below is description of the backend that I implemented. 
 
+Original APP is now available in App Store and Play Store: https://play.google.com/store/apps/details?id=com.uw5.warwick5aside&gl=GB
+
 Note: Few aspects has been removed from this reposistory comparing to original one reason being confidentiality. 
 
 How it operates:
